@@ -1,0 +1,20 @@
+<div id="content">
+	<ul id="items">
+	{{#each menuItems}}
+	<li data-id="{{this.id}}">
+		<article>
+			<header>
+				<figure>
+					<img src="{{this.cover}}" alt="{{this.name}}" />
+				</figure>
+				<h2 class="name">{{this.name}}
+			</header>
+			<p class="price">${{format_price this.price}}</p>
+			<footer>
+				<a class="add_cart" href="#">Add to cart</a>
+			</footer>
+		</article>
+	</li>
+	{{/each}}
+	</ul>
+</div>

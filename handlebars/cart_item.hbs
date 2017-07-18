@@ -1,0 +1,10 @@
+<ul>
+{{#each menuItems}}
+	<li data-id="{{this.id}}">
+		<figure>
+			<img src="{{this.cover}}" alt="cart-item">
+		</figure>
+		<p>{{this.quantity}} x ${{format_price this.price}}</p>
+	</li>
+{{/each}}
+</ul>
