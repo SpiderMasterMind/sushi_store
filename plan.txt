@@ -1,2 +1,0 @@
-Phase 1: get to the stage where all depedancies are loaded and menu json from back end is being rendered.
-
