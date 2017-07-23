@@ -1,10 +1,10 @@
 var CartView = Backbone.View.extend({
-	$cart: $("#cart"),
 	template: App.templates.cart_item,
 	attributes: {
 		"id": "cart"
 	},
 	initialize: function() {
+		$('#cart').remove();
 		this.render();
 	},
 	render: function() {
@@ -13,11 +13,14 @@ var CartView = Backbone.View.extend({
 		this.renderCartFooter(this.getCartTotal());
 	},
 	renderCartItemsView: function() {
-			$("#cart").remove();
-			App.$main.prepend(this.$el);
-			if (this.collection.length === 1 && this.allQuantitiesAreOne()) {
-				$("#cart").hide().slideDown('500');
-			}
+		if (this.collection.length === 0) {
+			return;
+		} else if (this.collection.length === 1 && this.allQuantitiesAreOne()) {
+			$('main').prepend(this.$el);
+			$("#cart").hide().slideDown('500');
+		} else {
+			$('main').prepend(this.$el);
+		}
 	},
 	renderCartFooter: function(cartTotal) {
 		new CartFooterView({ total: cartTotal });
