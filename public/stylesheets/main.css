@@ -442,6 +442,11 @@ main ul li {
 #checkout > section footer form input:hover {
   background: linear-gradient(to bottom, #a90040 0%, #d60041 100%);
 }
+#checkout > section a.close {
+  transform: rotate(45deg);
+  font-size: 25px;
+  color: #000;
+}
 body > footer {
   margin: 50px auto;
 }

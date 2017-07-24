@@ -31,9 +31,10 @@ var CartView = Backbone.View.extend({
 		}, this);
 	},
 	getCartTotal: function() {
-		return this.collection.reduce(function(memo, val) { 
+		App.total = this.collection.reduce(function(memo, val) { 
 			return memo + (val.get('price') * val.get('quantity'));
 		}, 0);
+		return App.total;
 	},
 
 });

@@ -6,7 +6,7 @@ var ItemDetailView = Backbone.View.extend({
 	},
 	render: function() {
 		this.$el.html(this.template( this.collection.get(this.id).toJSON() ));
-		$('#items').after(this.$el);
+		$('#content').append(this.$el);
 	},
 	events: {
 		"click .close": "closeDetailView",

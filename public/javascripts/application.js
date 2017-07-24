@@ -1,6 +1,11 @@
-// The el of menu items and item detail must be thought out, so events occur
-// Look at next/prev id methods, in case there is a 'gap' in id numbers
-// helper method item vs items
+// select animation
+// checkout doesnt let you 'return to shop' (particularly after decrement to 0 items!
+// return to menu on close or background click?
+// local storage - done - stop slide if reload and only one item
+// routing
+// fix line amnts
+// make checkout linger on scroll
+// see info when hovering in checkout
 var App = {
 	templates: JST,
 	$menu: $("#items"),
@@ -21,22 +26,26 @@ var App = {
 		this.on("addItem", this.processAddItem.bind(this));
 		this.on("emptyCart", this.emptyCart.bind(this));
 		this.on("checkout", this.renderCheckout.bind(this));
+		window.addEventListener("unload", function() {
+      localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
+    }.bind(this));	
 	},
 	renderCheckout: function() {
-		this.$menu.remove();
-		new CheckoutView({
+		$('#cart').hide();
+		this.checkout =	new CheckoutView({
 			collection: this.cartItems,
 			el: '#content',
+			total: this.total,
 		});
 	},
 	emptyCart: function() {
 		this.cartItems.reset();
 		this.updateCheckoutItems();
 		$('#checkout').remove();
+		$('#content').remove();
 		this.renderMenuItems();
 	},
 	processAddItem: function(id) {
-		console.log(id);
 		if (this.itemExists(id)) {
 			this.incrementItem(id);
 		} else {
@@ -65,13 +74,21 @@ var App = {
 		});
 	},
 	initCart: function() {
-		this.cartItems = new CartItems();
+		this.cartItems = new CartItems(JSON.parse(localStorage.getItem("sushi")));
 	},
 	renderCartView: function() {
 		this.cartView = new CartView({ collection: this.cartItems });
 	},
 	updateCheckoutItems: function() {
-		this.$count.text(this.getTotalItems());
+		var itemCount = this.getTotalItems();
+		this.$count.text(itemCount + this.itemsHelper(itemCount));
+	},
+	itemsHelper: function(items) {
+		if (items === 1) {
+			return " item"
+		} else {
+			return " items"
+		}
 	},
 	getTotalItems: function() {
 		if (!this.cartItems || this.cartItems.length === 0) {
@@ -93,4 +110,12 @@ var App = {
 
 Handlebars.registerHelper("format_price", function(price) {
 	return (+price).toFixed(2);
+});
+
+Handlebars.registerHelper("item_helper", function(item) {
+	if (item === "1") {
+		return "item"
+	} else {
+		return "items"
+	}
 });

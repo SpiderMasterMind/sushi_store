@@ -2,6 +2,7 @@
 	<div class="img_top"></div>
 		<section>
 			<h1>Order Details</h1>
+			<a class="close" href="#">+</a>
 			<table>
 				<thead>
 					<tr>
@@ -25,14 +26,14 @@
 								<i class="fa fa-plus" aria-hidden="true"></i>
 							</span>
 						</td>
-						<td>{{price}}</td>
+						<td>${{format_price price}}</td>
 					</tr>
 					{{/each}}
 				</tbody>
 			</table>
-			<p>Total: <span class="total">{{price}}</span></p>
+			<p>Total: <span class="total">${{format_price total}}</span></p>
 			<footer>
-				<a href="/">Cancel order</a>
+				<a href="/" class="cancel">Cancel order</a>
 				<form action="/" method="post">
 					<input type="submit" value="ORDER NOW!">
 				</form>
