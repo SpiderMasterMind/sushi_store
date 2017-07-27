@@ -17,27 +17,35 @@ var CheckoutView = Backbone.View.extend({
 		"click .cancel": "cancelOrder",
 		"click .fa-plus": "incrementItem",
 		"click .fa-minus": "decrementItem",
+		"click .continue": "closeCheckoutView",
 	},
 	incrementItem: function(event) {
 		event.preventDefault();
 		var id = this.getItemId(event);
 		var newQuantity = +(this.collection.get(id).get('quantity')) + 1;
-
-		this.collection.get(id).set({ "quantity": String(newQuantity) });
+		App.cartItems.get(id).set({ "quantity": String(newQuantity) });
 		this.updateQuantitySpan(id, newQuantity);
+		this.updateLinePrice(id, newQuantity);
 		this.updateTotal();
 	},
 	decrementItem: function(event) {
 		event.preventDefault();
 		var id = this.getItemId(event);
 		var newQuantity = +(this.collection.get(id).get('quantity')) - 1;
-		this.collection.get(id).set({ "quantity": String(newQuantity) });
+		App.cartItems.get(id).set({ "quantity": String(newQuantity) });
 		if (newQuantity === 0) {
 			this.$("tr[data-id='" + id + "']").remove();	
+			this.collection.remove(id);
 		} else {
 			this.updateQuantitySpan(id, newQuantity);
+			this.updateLinePrice(id, newQuantity);
+			
 		}
 		this.updateTotal();
+	},
+	updateLinePrice: function(id, newQuantity) {
+		var price = +newQuantity * Number(this.collection.get(id).get("price"));
+		$("tr[data-id='" + id + "']").find("td").last().text("$" + price.toFixed(2));
 	},
 	updateTotal: function() {
 		this.$('.total').text("$" + App.cartView.getCartTotal().toFixed(2));
@@ -55,5 +63,13 @@ var CheckoutView = Backbone.View.extend({
 			$('#content').remove();
 			App.trigger("emptyCart");
 		});
+	},
+	closeCheckoutView: function(event) {
+		event.preventDefault();
+		$('#content').remove();
+		App.trigger("showMenu");
+		App.trigger("showCart");
+		//App.renderCartView();
+		$('#cart').show();
 	},
 });

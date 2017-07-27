@@ -1,11 +1,7 @@
 // select animation
-// checkout doesnt let you 'return to shop' (particularly after decrement to 0 items!
-// return to menu on close or background click?
-// local storage - done - stop slide if reload and only one item
 // routing
-// fix line amnts
-// make checkout linger on scroll
 // see info when hovering in checkout
+// refactoring >:-()
 var App = {
 	templates: JST,
 	$menu: $("#items"),
@@ -13,6 +9,7 @@ var App = {
 	$cart: $("#cart"),
 	$count: $("span.count"),
 	init: function() {
+		console.log('start');
 		this.renderMenuItems();
 		this.initCart();
 		this.renderCartView();
@@ -25,10 +22,18 @@ var App = {
 		this.on("showMenu", this.renderMenuItems.bind(this));
 		this.on("addItem", this.processAddItem.bind(this));
 		this.on("emptyCart", this.emptyCart.bind(this));
+		this.on("showCart", this.renderCartView.bind(this));
 		this.on("checkout", this.renderCheckout.bind(this));
 		window.addEventListener("unload", function() {
       localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
     }.bind(this));	
+		$(window).scroll(function() {
+			if ($(window).scrollTop() >= 125) {
+				$('#cart').addClass('fix-cart');
+			} else {
+				$('#cart').removeClass("fix-cart");
+			}
+		});
 	},
 	renderCheckout: function() {
 		$('#cart').hide();
@@ -68,10 +73,11 @@ var App = {
 	},
 
 	renderMenuItems: function() {
-		// this.menuItems is passed in from layout.pug
+		// menuItems collection is passed in from layout.pug
 		this.menuView = new MenuItemView({ 
 			collection: this.menuItems,
 		});
+		
 	},
 	initCart: function() {
 		this.cartItems = new CartItems(JSON.parse(localStorage.getItem("sushi")));

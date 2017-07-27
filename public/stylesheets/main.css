@@ -450,3 +450,20 @@ main ul li {
 body > footer {
   margin: 50px auto;
 }
+
+.fix-cart {
+	position: fixed;
+	left: 220px;
+	top: 5px;
+	z-index: 15;
+}
+
+div#cart.fix-cart {
+	width: 1000px;
+}
+
+a.continue {
+	float: left;
+	text-align: center;
+	margin-top: 16px;
+}
