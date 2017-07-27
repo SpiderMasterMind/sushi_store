@@ -1,15 +1,9 @@
 // select animation
 // routing
-// see info when hovering in checkout
 // refactoring >:-()
 var App = {
 	templates: JST,
-	$menu: $("#items"),
-	$main: $("main"),
-	$cart: $("#cart"),
-	$count: $("span.count"),
 	init: function() {
-		console.log('start');
 		this.renderMenuItems();
 		this.initCart();
 		this.renderCartView();
@@ -27,13 +21,13 @@ var App = {
 		window.addEventListener("unload", function() {
       localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
     }.bind(this));	
-		$(window).scroll(function() {
-			if ($(window).scrollTop() >= 125) {
-				$('#cart').addClass('fix-cart');
-			} else {
-				$('#cart').removeClass("fix-cart");
-			}
-		});
+		//$(window).scroll(function() {
+		//	if ($(window).scrollTop() >= 125) {
+		//		$('#cart').addClass('fix-cart');
+		//	} else {
+		//		$('#cart').removeClass("fix-cart");
+		//	}
+		//});
 	},
 	renderCheckout: function() {
 		$('#cart').hide();
@@ -67,13 +61,11 @@ var App = {
 	},
 	incrementItem: function(id) {
 		var itemToAdd = this.cartItems.get(id);
-		var quantity = +itemToAdd.get('quantity');
-		newQuantity = quantity += 1;
+		var newQuantity = (+itemToAdd.get('quantity')) + 1;
 		itemToAdd.set({ quantity: newQuantity.toString() }); 
 	},
 
 	renderMenuItems: function() {
-		// menuItems collection is passed in from layout.pug
 		this.menuView = new MenuItemView({ 
 			collection: this.menuItems,
 		});
@@ -87,9 +79,9 @@ var App = {
 	},
 	updateCheckoutItems: function() {
 		var itemCount = this.getTotalItems();
-		this.$count.text(itemCount + this.itemsHelper(itemCount));
+		$("span.count").text(itemCount + this.getItemsString(itemCount));
 	},
-	itemsHelper: function(items) {
+	getItemsString: function(items) {
 		if (items === 1) {
 			return " item"
 		} else {

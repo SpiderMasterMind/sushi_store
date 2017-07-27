@@ -39,7 +39,6 @@ var CheckoutView = Backbone.View.extend({
 		} else {
 			this.updateQuantitySpan(id, newQuantity);
 			this.updateLinePrice(id, newQuantity);
-			
 		}
 		this.updateTotal();
 	},
@@ -69,7 +68,6 @@ var CheckoutView = Backbone.View.extend({
 		$('#content').remove();
 		App.trigger("showMenu");
 		App.trigger("showCart");
-		//App.renderCartView();
 		$('#cart').show();
 	},
 });
