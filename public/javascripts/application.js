@@ -4,11 +4,11 @@
 var App = {
 	templates: JST,
 	init: function() {
-		this.renderMenuItems();
+		//this.renderMenuItems();
 		this.initCart();
-		this.renderCartView();
+		//this.renderCartView();
 		this.bindEvents();
-		this.updateCheckoutItems();
+		//this.updateCheckoutItems();
 	},
 	bindEvents: function() {
 		_.extend(this, Backbone.Events);

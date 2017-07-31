@@ -21,8 +21,13 @@ var router = new (Backbone.Router.extend({
 	},
 	routes: {
 		"menu": "index", 
-    "checkout": "checkoutView" 
+    "checkout": "checkoutView",
+	//	"menu/:id": "itemView",
 	},
+	//itemView: function(id) {
+	//	console.log(id);
+	//	App.renderItemDetailView(id);
+	//},
 	checkoutView: function() {
 		App.renderCheckout.bind(App)
 	},
@@ -30,9 +35,23 @@ var router = new (Backbone.Router.extend({
 
 Backbone.history.start({ pushState: true });
 
-$(document).on('click', "a[href^='/']", function(e) {
-  e.preventDefault();
-	console.log($(e.currentTarget).attr('href'));
-  var href = $(e.currentTarget).attr('href').replace(/^\//, '');
+$(document).on('click', "a[href^='/']", function(event) {
+  event.preventDefault();
+  var href = $(event.currentTarget).attr('href').replace(/^\//, '');
   router.navigate(href, { trigger: true });
 });
+
+// first point: check trigger: true effect
+//$(document).on('click', "article > header", function(event) {
+//	event.preventDefault();
+//	var path = "menu/" + $(event.currentTarget).closest("li").attr("data-id")
+//	router.navigate(path, { trigger: true });
+//});
+
+//$(document).on('click', ".next .prev", function(event) {
+//	event.preventDefault();
+//	var id = $(event.currentTarget).closest("li").attr("data-id");
+//	debugger;
+//	var path = "menu/" + $(event.currentTarget).closest("li").attr("data-id")
+//	router.navigate(path, { trigger: true });
+//});
