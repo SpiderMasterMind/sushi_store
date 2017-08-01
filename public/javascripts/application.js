@@ -1,14 +1,15 @@
-// select animation
-// routing
+// animate item scrolling?
+//
+// routing with express (use res.json)?
 // refactoring >:-()
+// cycling back around items at min/max ID
+// move router listeners to main app?
+// to address the multiple additions maybe its best to use remove() wherever possible
 var App = {
 	templates: JST,
 	init: function() {
-		//this.renderMenuItems();
 		this.initCart();
-		//this.renderCartView();
 		this.bindEvents();
-		//this.updateCheckoutItems();
 	},
 	bindEvents: function() {
 		_.extend(this, Backbone.Events);
@@ -21,21 +22,30 @@ var App = {
 		window.addEventListener("unload", function() {
       localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
     }.bind(this));	
-		//$(window).scroll(function() {
-		//	if ($(window).scrollTop() >= 125) {
-		//		$('#cart').addClass('fix-cart');
-		//	} else {
-		//		$('#cart').removeClass("fix-cart");
-		//	}
-		//});
 	},
 	renderCheckout: function() {
 		$('#cart').hide();
 		this.checkout =	new CheckoutView({
 			collection: this.cartItems,
-			el: '#content',
+			el: '#contents',
 			total: this.total,
 		});
+	},
+	renderMenuItems: function() {
+		console.log("rendering menu items");
+		this.menuView = new MenuItemView({ 
+			collection: this.menuItems,
+			el: "#contents",
+		});
+		
+  router.navigate("menu", { trigger: true });
+	},
+	renderItemDetailView: function(id) {
+		this.itemView = new ItemDetailView({
+			collection: this.menuItems,
+			el: '#contents',
+			id: id,
+		})
 	},
 	emptyCart: function() {
 		this.cartItems.reset();
@@ -64,13 +74,6 @@ var App = {
 		var newQuantity = (+itemToAdd.get('quantity')) + 1;
 		itemToAdd.set({ quantity: newQuantity.toString() }); 
 	},
-
-	renderMenuItems: function() {
-		this.menuView = new MenuItemView({ 
-			collection: this.menuItems,
-		});
-		
-	},
 	initCart: function() {
 		this.cartItems = new CartItems(JSON.parse(localStorage.getItem("sushi")));
 	},
@@ -96,13 +99,6 @@ var App = {
 				return memo + +val.get('quantity');
 			},0);
 		}
-	},
-	renderItemDetailView: function(id) {
-		new ItemDetailView({
-			collection: this.menuItems,
-			id: id,
-			el: '#content',
-		})
 	},
 }
 

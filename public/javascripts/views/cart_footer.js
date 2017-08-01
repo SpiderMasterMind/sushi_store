@@ -13,7 +13,9 @@ var CartFooterView = Backbone.View.extend({
 		event.preventDefault();
 		App.trigger("checkout");
 	},
-	emptyCart: function() {
+	emptyCart: function(event) {
+		event.preventDefault()
+		event.stopImmediatePropagation();
 		$("#cart").slideUp('500', function() {
 			$("#cart").hide();
 			App.trigger("emptyCart");

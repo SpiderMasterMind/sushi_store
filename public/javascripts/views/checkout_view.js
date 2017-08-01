@@ -9,15 +9,13 @@ var CheckoutView = Backbone.View.extend({
 			cartItems: this.collection.toJSON(),
 			total: this.total,
 		}));
-		$('#content').append(this.$el);
-
 		return this;
 	},
 	events: {
-		"click .cancel": "cancelOrder",
+		//"click .cancel": "cancelOrder",
 		"click .fa-plus": "incrementItem",
 		"click .fa-minus": "decrementItem",
-		"click .continue": "closeCheckoutView",
+		//"click .continue": "closeCheckoutView",
 	},
 	incrementItem: function(event) {
 		event.preventDefault();
@@ -55,19 +53,19 @@ var CheckoutView = Backbone.View.extend({
 	getItemId: function(event) {
 		return $(event.target).closest('tr').attr('data-id');
 	},
-	cancelOrder: function(event) {
-		event.preventDefault();
-		$("#cart").slideUp('500', function() {
-			$("#cart").hide();
-			$('#content').remove();
-			App.trigger("emptyCart");
-		});
-	},
-	closeCheckoutView: function(event) {
-		event.preventDefault();
-		$('#content').remove();
-		App.trigger("showMenu");
-		App.trigger("showCart");
-		$('#cart').show();
-	},
+	//cancelOrder: function(event) {
+	//	event.preventDefault();
+	//	$("#cart").slideUp('500', function() {
+	//		$("#cart").hide();
+	//		$('#contents').remove();
+	//		App.trigger("emptyCart");
+	//	});
+	//},
+	//closeCheckoutView: function(event) {
+	//	event.preventDefault();
+	//	$('#contents').remove();
+	//	App.trigger("showMenu");
+	//	App.trigger("showCart");
+	//	$('#cart').show();
+	//},
 });

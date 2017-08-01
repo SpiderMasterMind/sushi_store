@@ -53,7 +53,7 @@ this["JST"]["checkout"] = Handlebars.template({"1":function(container,depth0,hel
 this["JST"]["item_detail"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "	<div id=\"item_details\">		<div>			<div class=\"nav prev\">				<img src=\"images/nav-prev.png\" alt=\"prev\">			</div>			<figure>				<img src=\""
+  return "	<div id=\"item_details\">		<div>			<div class=\"nav prev\">				<img src=\"/images/nav-prev.png\" alt=\"prev\">			</div>			<figure>				<img src=\""
     + alias4(((helper = (helper = helpers.cover || (depth0 != null ? depth0.cover : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"cover","hash":{},"data":data}) : helper)))
     + "\" alt=\"selected-item\">			</figure>			<article>				<a class=\"close\" href=\"/\">+</a>				<h1>"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
@@ -73,7 +73,7 @@ this["JST"]["item_detail"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"mai
     + alias4(((helper = (helper = helpers.energyKCal || (depth0 != null ? depth0.energyKCal : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"energyKCal","hash":{},"data":data}) : helper)))
     + "</td>						</tr>						<tr>							<td>Sugar</td>							<td>"
     + alias4(((helper = (helper = helpers.sugar || (depth0 != null ? depth0.sugar : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"sugar","hash":{},"data":data}) : helper)))
-    + "</td>						</tr>					</tbody>				</table>			</aside>			<div class=\"nav next\">				<img src=\"images/nav-next.png\" alt=\"next\">			</div>		</div>	</div>";
+    + "</td>						</tr>					</tbody>				</table>			</aside>			<div class=\"nav next\">				<img src=\"/images/nav-next.png\" alt=\"next\">			</div>		</div>	</div>";
 },"useData":true});
 
 this["JST"]["menu_items"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -93,7 +93,7 @@ this["JST"]["menu_items"] = Handlebars.template({"1":function(container,depth0,h
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "	<ul id=\"items\">	"
+  return "<ul id=\"items\">	"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.menuItems : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "	</ul>";
+    + "</ul>";
 },"useData":true});
