@@ -1,10 +1,7 @@
 // animate item scrolling?
 //
-// routing with express (use res.json)?
-// refactoring >:-()
 // cycling back around items at min/max ID
 // move router listeners to main app?
-// to address the multiple additions maybe its best to use remove() wherever possible
 var App = {
 	templates: JST,
 	init: function() {
