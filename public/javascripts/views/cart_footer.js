@@ -19,6 +19,7 @@ var CartFooterView = Backbone.View.extend({
 		$("#cart").slideUp('500', function() {
 			$("#cart").hide();
 			App.trigger("emptyCart");
+			App.router.navigate("menu", {trigger: true});
 		});
 	},
 	render: function() {

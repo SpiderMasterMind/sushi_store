@@ -26,7 +26,7 @@ var ItemDetailView = Backbone.View.extend({
 		event.stopImmediatePropagation();
 		event.preventDefault();
 		$("#item_details").remove();
-		App.trigger("showMenu");
+		App.router.navigate("menu", {trigger: true});
 	},
 	//goToNext: function(event) {
 	//	event.preventDefault();

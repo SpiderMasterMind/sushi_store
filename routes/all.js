@@ -11,6 +11,10 @@ function getMenuItems() {
 }
 
 router.get('/', function(req, res, next) {
+	res.redirect('/menu');
+});
+
+router.get('/menu', function(req, res, next) {
   res.render('index', { 
 		menuData: getMenuItems() 
 	});

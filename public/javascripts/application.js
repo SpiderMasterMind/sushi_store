@@ -1,13 +1,21 @@
 // animate item scrolling?
 //
 // cycling back around items at min/max ID
-// move router listeners to main app?
+// think about moving router listeners to main app?
+// AJAX POST
+// is there any need for "showMenu" event any more?
+// understand absolute functionality of router as I have it now
 var App = {
 	templates: JST,
 	init: function() {
 		this.initCart();
-		this.bindEvents();
+		this.bindEvents();	
+		App.renderMenuItems();
+		App.renderCartView();
+		App.updateCheckoutItems();
+		this.router = new Router();
 	},
+
 	bindEvents: function() {
 		_.extend(this, Backbone.Events);
 		this.on("showItem", this.renderItemDetailView.bind(this));
@@ -22,6 +30,8 @@ var App = {
 	},
 	renderCheckout: function() {
 		$('#cart').hide();
+		if (this.checkout) { this.checkout.undelegateEvents(); }
+
 		this.checkout =	new CheckoutView({
 			collection: this.cartItems,
 			el: '#contents',
@@ -30,14 +40,17 @@ var App = {
 	},
 	renderMenuItems: function() {
 		console.log("rendering menu items");
+		if (this.menuView) { this.menuView.undelegateEvents(); }
+
 		this.menuView = new MenuItemView({ 
 			collection: this.menuItems,
 			el: "#contents",
 		});
 		
-  router.navigate("menu", { trigger: true });
 	},
 	renderItemDetailView: function(id) {
+		if (this.itemView) { this.itemView.undelegateEvents(); }
+
 		this.itemView = new ItemDetailView({
 			collection: this.menuItems,
 			el: '#contents',
@@ -49,7 +62,7 @@ var App = {
 		this.updateCheckoutItems();
 		$('#checkout').remove();
 		$('#content').remove();
-		this.renderMenuItems();
+		//this.renderMenuItems();
 	},
 	processAddItem: function(id) {
 		if (this.itemExists(id)) {

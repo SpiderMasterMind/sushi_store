@@ -19,11 +19,10 @@ html
 						span.count
 		block content
 
-	+javascript_include_tag("application")
+	+javascript_include_tag("router", "application")
 	+javascript_include_tag("models/menu_item")
 	+javascript_include_tag("collections/menu_items", "collections/cart_items")
 	+javascript_include_tag("views/menu_items", "views/cart_view", "views/cart_footer", "views/item_detail", "views/checkout_view")
 	script(type="text/javascript").
 		App.menuItems = new MenuItems(!{JSON.stringify(menuData)});	
 		App.init();
-	+javascript_include_tag("router")
