@@ -1,37 +1,49 @@
-// animate item scrolling?
-//
-// cycling back around items at min/max ID
-// think about moving router listeners to main app?
-// AJAX POST
-// is there any need for "showMenu" event any more?
-// understand absolute functionality of router as I have it now
 var App = {
 	templates: JST,
 	init: function() {
 		this.initCart();
 		this.bindEvents();	
-		App.renderMenuItems();
-		App.renderCartView();
-		App.updateCheckoutItems();
+		this.renderMenuItems();
+		this.renderCartView();
+		this.updateCheckoutItems();
 		this.router = new Router();
 	},
-
 	bindEvents: function() {
 		_.extend(this, Backbone.Events);
 		this.on("showItem", this.renderItemDetailView.bind(this));
-		this.on("showMenu", this.renderMenuItems.bind(this));
 		this.on("addItem", this.processAddItem.bind(this));
 		this.on("emptyCart", this.emptyCart.bind(this));
-		this.on("showCart", this.renderCartView.bind(this));
 		this.on("checkout", this.renderCheckout.bind(this));
-		window.addEventListener("unload", function() {
-      localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
-    }.bind(this));	
+		$(document).on('click', "a[href^='/']", this.navigateToMenu.bind(this));
+		$(document).on('click', "article > header", this.navigateToItemDetail.bind(this));
+		$(document).on('click', ".nav", this.navigateOnItemSidescroll.bind(this));
+		$(window).on("unload", this.setLocalStorage.bind(this));
+	},
+	setLocalStorage: function() {
+		localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
+	},
+	navigateToMenu: function(event) {
+		event.preventDefault();
+  	var href = $(event.currentTarget).attr('href').replace(/^\//, '');
+  	this.router.navigate(href, { trigger: true });
+	},
+	navigateToItemDetail: function(event) {
+		event.preventDefault();
+		var path = "menu/" + $(event.currentTarget).closest("li").attr("data-id")
+		this.router.navigate(path, { trigger: true });
+	},
+	navigateOnItemSidescroll: function(event) {
+		event.preventDefault();
+		var currentId = +(window.location.href.match(/[0-9]+$/)[0]); 
+		var path = "menu/" + this.getNewId($(event.currentTarget), currentId).toString();
+		$('#item_details > div').fadeOut();
+		this.router.navigate(path, { trigger: true });
+		$('#item_details > div').hide().fadeIn();
+		
 	},
 	renderCheckout: function() {
 		$('#cart').hide();
 		if (this.checkout) { this.checkout.undelegateEvents(); }
-
 		this.checkout =	new CheckoutView({
 			collection: this.cartItems,
 			el: '#contents',
@@ -39,18 +51,14 @@ var App = {
 		});
 	},
 	renderMenuItems: function() {
-		console.log("rendering menu items");
 		if (this.menuView) { this.menuView.undelegateEvents(); }
-
 		this.menuView = new MenuItemView({ 
 			collection: this.menuItems,
 			el: "#contents",
 		});
-		
 	},
 	renderItemDetailView: function(id) {
 		if (this.itemView) { this.itemView.undelegateEvents(); }
-
 		this.itemView = new ItemDetailView({
 			collection: this.menuItems,
 			el: '#contents',
@@ -62,7 +70,6 @@ var App = {
 		this.updateCheckoutItems();
 		$('#checkout').remove();
 		$('#content').remove();
-		//this.renderMenuItems();
 	},
 	processAddItem: function(id) {
 		if (this.itemExists(id)) {
@@ -109,6 +116,25 @@ var App = {
 				return memo + +val.get('quantity');
 			},0);
 		}
+	},
+	getNewId: function(button, id) {
+		var arr = this.returnArrayOfIds();
+		if (button.hasClass("next")) {
+			if (arr[arr.length - 1] === id) {
+				return arr[0]
+			} else {
+				return id + 1; 
+			}
+		} else {
+			if (arr[0] === id) {
+				return arr[arr.length - 1];
+			} else {
+				return id - 1;
+			}
+		}
+	},
+	returnArrayOfIds: function() {
+		return this.menuItems.toJSON().map(function(model) { return model.id } );
 	},
 }
 

@@ -36,5 +36,4 @@ var CartView = Backbone.View.extend({
 		}, 0);
 		return App.total;
 	},
-
 });

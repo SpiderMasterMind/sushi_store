@@ -65,7 +65,6 @@ var CheckoutView = Backbone.View.extend({
 	closeCheckoutView: function(event) {
 		event.stopImmediatePropagation();
 		event.preventDefault();
-		//$('#contents').remove();
 		App.router.navigate("menu", {trigger: true});
 		$('#cart').show();
 	},
