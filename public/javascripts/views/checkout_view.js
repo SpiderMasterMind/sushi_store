@@ -21,7 +21,7 @@ var CheckoutView = Backbone.View.extend({
 		event.preventDefault();
 		var id = this.getItemId(event);
 		var newQuantity = +(this.collection.get(id).get('quantity')) + 1;
-		App.cartItems.get(id).set({ "quantity": String(newQuantity) });
+		this.collection.get(id).set({ "quantity": String(newQuantity) });
 		this.updateQuantitySpan(id, newQuantity);
 		this.updateLinePrice(id, newQuantity);
 		this.updateTotal();
@@ -30,7 +30,7 @@ var CheckoutView = Backbone.View.extend({
 		event.preventDefault();
 		var id = this.getItemId(event);
 		var newQuantity = +(this.collection.get(id).get('quantity')) - 1;
-		App.cartItems.get(id).set({ "quantity": String(newQuantity) });
+		this.collection.get(id).set({ "quantity": String(newQuantity) });
 		if (newQuantity === 0) {
 			this.$("tr[data-id='" + id + "']").remove();	
 			this.collection.remove(id);
@@ -54,18 +54,19 @@ var CheckoutView = Backbone.View.extend({
 		return $(event.target).closest('tr').attr('data-id');
 	},
 	cancelOrder: function(event) {
-		event.stopImmediatePropagation();
 		event.preventDefault();
 		$("#cart").slideUp('500', function() {
 			$("#cart").hide();
 			App.trigger("emptyCart");
-			App.router.navigate("menu", {trigger: true});
+			App.trigger("showMenu");
+			// doesnt trigger total items update
+		//	App.router.navigate("menu", {trigger: true});
 		});
 	},
 	closeCheckoutView: function(event) {
 		event.stopImmediatePropagation();
 		event.preventDefault();
-		App.router.navigate("menu", {trigger: true});
+		//App.router.navigate("menu", {trigger: true});
 		$('#cart').show();
 	},
 });

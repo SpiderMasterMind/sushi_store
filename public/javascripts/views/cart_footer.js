@@ -5,9 +5,14 @@ var CartFooterView = Backbone.View.extend({
 		"click .empty_cart": "emptyCart",
 		"click .checkout": "goToCheckout",
 	},
-	initialize: function(options) {
-		this.options = options;
+	initialize: function() {
 		this.render();
+		this.listenTo(this.collection, "update change", this.render());
+	},
+	getCartTotal: function() {
+		return this.collection.reduce(function(memo, val) { 
+			return memo + (val.get('price') * val.get('quantity'));
+		}, 0);
 	},
 	goToCheckout: function(event) {
 		event.preventDefault();
@@ -15,15 +20,13 @@ var CartFooterView = Backbone.View.extend({
 	},
 	emptyCart: function(event) {
 		event.preventDefault()
-		event.stopImmediatePropagation();
 		$("#cart").slideUp('500', function() {
 			$("#cart").hide();
 			App.trigger("emptyCart");
-			App.router.navigate("menu", {trigger: true});
 		});
 	},
-	render: function() {
-		this.$el.html(this.template({ total: this.options.total })); 
+	render: function(totalPrice) {
+		this.$el.html(this.template({ total: this.getCartTotal() })); 
 		$('#cart').append(this.$el);
 	},
 });

@@ -6,6 +6,8 @@ var CartView = Backbone.View.extend({
 	initialize: function() {
 		$('#cart').remove();
 		this.render();
+		console.log(this.collection);
+		this.listenTo(this.collection, "change update", this.render);
 	},
 	render: function() {
 		this.$el.html(this.template({ menuItems: this.collection.toJSON() }));
@@ -23,17 +25,14 @@ var CartView = Backbone.View.extend({
 		}
 	},
 	renderCartFooter: function(cartTotal) {
-		new CartFooterView({ total: cartTotal });
+		new CartFooterView({ 
+			collection: this.collection,
+		});
 	},
 	allQuantitiesAreOne: function() {
 		return this.collection.every(function(model) {
 			return +model.get('quantity') === 1
 		}, this);
 	},
-	getCartTotal: function() {
-		App.total = this.collection.reduce(function(memo, val) { 
-			return memo + (val.get('price') * val.get('quantity'));
-		}, 0);
-		return App.total;
-	},
+
 });

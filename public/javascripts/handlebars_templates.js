@@ -97,3 +97,11 @@ this["JST"]["menu_items"] = Handlebars.template({"1":function(container,depth0,h
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.menuItems : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</ul>";
 },"useData":true});
+
+this["JST"]["total_items"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "<div class=\"cart\">	<a href=\"#\">		<span class=\"left\">Shopping Cart</span><span class=\"right\"><!--			--><span class=\"count\">"
+    + container.escapeExpression(((helper = (helper = helpers.quantity || (depth0 != null ? depth0.quantity : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"quantity","hash":{},"data":data}) : helper)))
+    + "</span>			items		</span>	</a></div>";
+},"useData":true});

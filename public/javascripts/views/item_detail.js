@@ -10,17 +10,43 @@ var ItemDetailView = Backbone.View.extend({
 	},
 	events: {
 		"click .close": "closeDetailView",
-		"click #item_details .add_cart": "addItem",
+		"click #item_details .add_cart": "processAddItem",
+		"click .nav.prev": "renderPrevItem",
+		"click .nav.next": "renderNextItem",
 	},
-	addItem: function(event) {
-		event.stopImmediatePropagation();
+	renderPrevItem: function(event) {
 		event.preventDefault();
-		App.trigger("addItem", this.id);
+		this.id = Number(this.id) - 1;
+		this.render();
+	},
+	renderNextItem: function(event) {
+		event.preventDefault();
+		this.id = Number(this.id) + 1;
+		this.render();
+	},
+	processAddItem: function(event) {
+		event.preventDefault();
+		
+		if (this.itemExists()) {
+			this.incrementQuantity();
+		} else {
+			this.addNewItemToCollection();
+		}
+	},
+	 itemExists: function() {
+		return !!App.cartItems.get(this.id);
+	},
+	addNewItemToCollection: function() {
+		App.cartItems.add(this.collection.get(this.id).clone());
+	},
+	incrementQuantity: function() {
+		var newQuantity = Number(App.cartItems.get(this.id).toJSON().quantity) + 1;
+		App.cartItems.get(this.id).set({ quantity: newQuantity.toString() }); 
 	},
 	closeDetailView: function(event) {
-		event.stopImmediatePropagation();
 		event.preventDefault();
 		$("#item_details").remove();
-		App.router.navigate("menu", {trigger: true});
+		App.trigger("showMenu");
 	},
+	
 });
