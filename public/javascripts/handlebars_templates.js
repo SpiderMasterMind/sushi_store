@@ -38,7 +38,7 @@ this["JST"]["checkout"] = Handlebars.template({"1":function(container,depth0,hel
     + "</td>						<td>							<span class=\"quantity_modifier\">								<i class=\"fa fa-minus\" aria-hidden=\"true\"></i>							</span>							<p>"
     + alias4(((helper = (helper = helpers.quantity || (depth0 != null ? depth0.quantity : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"quantity","hash":{},"data":data}) : helper)))
     + "</p>							<span class=\"quantity_modifier\">								<i class=\"fa fa-plus\" aria-hidden=\"true\"></i>							</span>						</td>						<td>$"
-    + alias4((helpers.format_price || (depth0 && depth0.format_price) || alias2).call(alias1,(depth0 != null ? depth0.price : depth0),{"name":"format_price","hash":{},"data":data}))
+    + alias4((helpers.format_price || (depth0 && depth0.format_price) || alias2).call(alias1,(depth0 != null ? depth0.total : depth0),{"name":"format_price","hash":{},"data":data}))
     + "</td>					</tr>					";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});

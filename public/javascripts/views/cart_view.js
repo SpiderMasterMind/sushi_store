@@ -12,19 +12,19 @@ var CartView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template({ menuItems: this.collection.toJSON() }));
 		this.renderCartItemsView();
-		this.renderCartFooter(this.getCartTotal());
+		this.renderCartFooter();
 	},
 	renderCartItemsView: function() {
 		if (this.collection.length === 0) {
 			return;
-		} else if (this.collection.length === 1 && this.allQuantitiesAreOne()) {
+		} else if (this.collection.length === 1 && this.allQuantitiesAreOne())  { //guard clause && $("#checkout").length === 0) {
 			$('main').prepend(this.$el);
 			$("#cart").hide().slideDown('500');
 		} else {
 			$('main').prepend(this.$el);
 		}
 	},
-	renderCartFooter: function(cartTotal) {
+	renderCartFooter: function() {
 		new CartFooterView({ 
 			collection: this.collection,
 		});

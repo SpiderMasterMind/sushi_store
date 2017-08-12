@@ -2,7 +2,7 @@ var TotalItemsView = Backbone.View.extend({
 	template: App.templates.total_items,
 	initialize: function() {
 		this.render();
-		this.listenTo(this.collection, "update change", this.render);
+		this.listenTo(App.cartItems, "update change reset", this.render);
 	},
 	render: function() {
 		this.$el.html(this.template( { quantity: this.getCartTotal() } ));

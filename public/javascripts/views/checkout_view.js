@@ -1,13 +1,14 @@
 var CheckoutView = Backbone.View.extend({
 	template: App.templates.checkout,
-	initialize: function(options) {
-		this.total = options.total;
+	initialize: function() {
 		this.render();
+		this.listenTo(this.collection, "update change", this.render);
 	},
 	render: function() {
+		this.addLineTotalsToCart()
 		this.$el.html(this.template({
 			cartItems: this.collection.toJSON(),
-			total: this.total,
+			total: this.getNewTotal(),
 		}));
 		return this;
 	},
@@ -17,39 +18,33 @@ var CheckoutView = Backbone.View.extend({
 		"click .fa-minus": "decrementItem",
 		"click .continue": "closeCheckoutView",
 	},
+	getNewTotal: function() {
+		return this.collection.reduce(function(memo, val) { 
+			return memo + (val.get('price') * val.get('quantity'));
+		}, 0);
+	},
+	addLineTotalsToCart: function() {
+		this.collection.each(function(item) {
+			var totalPrice = item.get("price") * Number(item.get("quantity"));
+			item.set( {total: totalPrice} )
+    });
+	},
 	incrementItem: function(event) {
 		event.preventDefault();
 		var id = this.getItemId(event);
 		var newQuantity = +(this.collection.get(id).get('quantity')) + 1;
 		this.collection.get(id).set({ "quantity": String(newQuantity) });
-		this.updateQuantitySpan(id, newQuantity);
-		this.updateLinePrice(id, newQuantity);
-		this.updateTotal();
 	},
 	decrementItem: function(event) {
 		event.preventDefault();
 		var id = this.getItemId(event);
-		var newQuantity = +(this.collection.get(id).get('quantity')) - 1;
-		this.collection.get(id).set({ "quantity": String(newQuantity) });
-		if (newQuantity === 0) {
-			this.$("tr[data-id='" + id + "']").remove();	
-			this.collection.remove(id);
+		var quantity = +(this.collection.get(id).get('quantity')) - 1;
+		if (quantity === 0 || quantity === "0") {
+			this.collection.remove(this.collection.get(id));
 		} else {
-			this.updateQuantitySpan(id, newQuantity);
-			this.updateLinePrice(id, newQuantity);
+			this.collection.get(id).set({ "quantity": String(quantity) });
 		}
-		this.updateTotal();
-	},
-	updateLinePrice: function(id, newQuantity) {
-		var price = +newQuantity * Number(this.collection.get(id).get("price"));
-		$("tr[data-id='" + id + "']").find("td").last().text("$" + price.toFixed(2));
-	},
-	updateTotal: function() {
-		this.$('.total').text("$" + App.cartView.getCartTotal().toFixed(2));
-	},
-	updateQuantitySpan: function(id, quantity) {
-		this.$("tr[data-id='" + id + "'] p").text(quantity);
-	},		
+	},	
 	getItemId: function(event) {
 		return $(event.target).closest('tr').attr('data-id');
 	},
@@ -59,14 +54,13 @@ var CheckoutView = Backbone.View.extend({
 			$("#cart").hide();
 			App.trigger("emptyCart");
 			App.trigger("showMenu");
-			// doesnt trigger total items update
 		//	App.router.navigate("menu", {trigger: true});
 		});
 	},
 	closeCheckoutView: function(event) {
-		event.stopImmediatePropagation();
 		event.preventDefault();
 		//App.router.navigate("menu", {trigger: true});
+		App.trigger("showMenu");
 		$('#cart').show();
 	},
 });

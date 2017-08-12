@@ -1,7 +1,9 @@
-// cart footer should re render itself
-// add new view for total items
-// animate scrolling
-// checkout item numbers should have their own view and be the same, this gets rid of $('span.count')
+// checkout viewing problem
+// setup local storage
+// animate transitions
+// min and max ids on transition
+// navigate router URLs
+// setup express POST request
 var App = {
 	templates: JST,
 	init: function() {
@@ -15,40 +17,12 @@ var App = {
 		_.extend(this, Backbone.Events);
 		this.on("showMenu", this.renderMenuItems.bind(this));
 		this.on("showItem", this.renderItemDetailView.bind(this));
-	//	this.on("addItem", this.processAddItem.bind(this));
 		this.on("emptyCart", this.emptyCart.bind(this));
 		this.on("checkout", this.renderCheckout.bind(this));
-		//$(document).on('click', "a[href^='/']", this.navigateToMenu.bind(this));
-		//$(document).on('click', "article > header", this.navigateToItemDetail.bind(this));
-		//$(document).on('click', ".nav", this.navigateOnItemSidescroll.bind(this));
-		//$(window).on("unload", this.setLocalStorage.bind(this));
 	},
 //	setLocalStorage: function() {
 	//	localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
 	//},
-//	navigateToMenu: function(event) {
-//		event.preventDefault();
-//  	var href = $(event.currentTarget).attr('href').replace(/^\//, '');
-//  	this.router.navigate(href, { : true });
-//	},
-//	navigateToItemDetail: function(event) {
-//		event.preventDefault();
-//		var path = "menu/" + $(event.currentTarget).closest("li").attr("data-id")
-//		this.router.navigate(path, { trigger: true });
-//	},
-//	navigateOnItemSidescroll: function(event) {
-//		event.preventDefault();
-//		var currentId = +(window.location.href.match(/[0-9]+$/)[0]); 
-//		var path = "menu/" + this.getNewId($(event.currentTarget), currentId).toString();
-//		$('#item_details > div').fadeOut();
-//		this.router.navigate(path, { trigger: true });
-//		$('#item_details > div').hide().fadeIn();
-	//		Menu Item buttons: Add to cart, item detail view
-	//		Make these events in the menu details view trigger:
-	//				Add to cart: change in collection, cart view listens to collection and re renders
-	//				Item Detail: App swaps view
-		
-//	},
 	renderCheckout: function() {
 		$('#cart').hide();
 		if (this.checkout) { this.checkout.undelegateEvents(); }
@@ -90,26 +64,6 @@ var App = {
 	},
 	renderCartView: function() {
 		this.cartView = new CartView({ collection: this.cartItems });
-	},
-//	updateCheckoutItems: function() {
-//		var itemCount = this.getTotalItems();
-//		$("span.count").text(itemCount + this.getItemsString(itemCount));
-//	},
-	getNewId: function(button, id) {
-		var arr = this.returnArrayOfIds();
-		if (button.hasClass("next")) {
-			if (arr[arr.length - 1] === id) {
-				return arr[0]
-			} else {
-				return id + 1; 
-			}
-		} else {
-			if (arr[0] === id) {
-				return arr[arr.length - 1];
-			} else {
-				return id - 1;
-			}
-		}
 	},
 	returnArrayOfIds: function() {
 		return this.menuItems.toJSON().map(function(model) { return model.id } );
