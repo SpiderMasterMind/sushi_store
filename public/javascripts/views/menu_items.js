@@ -19,8 +19,6 @@
 	processAddItem: function(event) {
 		event.preventDefault();
 		var id = +$(event.target).closest('li').attr('data-id');
-		//App.trigger("addItem", id);
-		
 		if (this.itemExists(id)) {
 			this.incrementQuantity(id);
 		} else {
@@ -34,10 +32,6 @@
 		App.cartItems.add(this.collection.get(id).clone());
 	},
 	incrementQuantity: function(id) {
-		//var itemToAdd = App.cartItems.get(id);
-		//debugger;
-		//var newQuantity = (+itemToAdd.get('quantity')) + 1;
-		// consider moving this to the App?
 		var newQuantity = Number(App.cartItems.get(id).toJSON().quantity) + 1;
 		App.cartItems.get(id).set({ quantity: newQuantity.toString() }); 
 	},

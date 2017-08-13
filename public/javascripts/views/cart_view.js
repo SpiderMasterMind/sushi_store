@@ -6,7 +6,6 @@ var CartView = Backbone.View.extend({
 	initialize: function() {
 		$('#cart').remove();
 		this.render();
-		console.log(this.collection);
 		this.listenTo(this.collection, "change update", this.render);
 	},
 	render: function() {
@@ -17,7 +16,7 @@ var CartView = Backbone.View.extend({
 	renderCartItemsView: function() {
 		if (this.collection.length === 0) {
 			return;
-		} else if (this.collection.length === 1 && this.allQuantitiesAreOne())  { //guard clause && $("#checkout").length === 0) {
+		} else if (this.collection.length === 1 && this.allQuantitiesAreOne())  {
 			$('main').prepend(this.$el);
 			$("#cart").hide().slideDown('500');
 		} else {

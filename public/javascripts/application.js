@@ -1,5 +1,3 @@
-// checkout viewing problem
-// setup local storage
 // animate transitions
 // min and max ids on transition
 // navigate router URLs
@@ -19,12 +17,12 @@ var App = {
 		this.on("showItem", this.renderItemDetailView.bind(this));
 		this.on("emptyCart", this.emptyCart.bind(this));
 		this.on("checkout", this.renderCheckout.bind(this));
+		$(window).on("unload", this.setLocalStorage.bind(this));
 	},
-//	setLocalStorage: function() {
-	//	localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
-	//},
+	setLocalStorage: function() {
+		localStorage.setItem("sushi", JSON.stringify(this.cartItems.toJSON()));
+	},
 	renderCheckout: function() {
-		$('#cart').hide();
 		if (this.checkout) { this.checkout.undelegateEvents(); }
 		this.checkout =	new CheckoutView({
 			collection: this.cartItems,
@@ -38,6 +36,7 @@ var App = {
 			collection: this.menuItems,
 			el: "#contents",
 		});
+
 	},
 	renderItemDetailView: function(id) {
 		if (this.itemView) { this.itemView.undelegateEvents(); }
@@ -55,8 +54,6 @@ var App = {
 	},
 	emptyCart: function() {
 		this.cartItems.reset();
-		$('#checkout').remove();
-		$('#content').remove();
 	},
 	initCart: function() {
 		this.cartItems = new CartItems(JSON.parse(localStorage.getItem("sushi")));

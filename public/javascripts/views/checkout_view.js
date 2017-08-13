@@ -2,7 +2,10 @@ var CheckoutView = Backbone.View.extend({
 	template: App.templates.checkout,
 	initialize: function() {
 		this.render();
-		this.listenTo(this.collection, "update change", this.render);
+		this.listenTo(this.collection, "update change", this.renderIfCheckoutView);
+	},
+	renderIfCheckoutView: function() {
+		if ($("#checkout").length > 0) { this.render(); }
 	},
 	render: function() {
 		this.addLineTotalsToCart()
@@ -10,6 +13,7 @@ var CheckoutView = Backbone.View.extend({
 			cartItems: this.collection.toJSON(),
 			total: this.getNewTotal(),
 		}));
+		$("#cart").hide();
 		return this;
 	},
 	events: {
@@ -26,7 +30,7 @@ var CheckoutView = Backbone.View.extend({
 	addLineTotalsToCart: function() {
 		this.collection.each(function(item) {
 			var totalPrice = item.get("price") * Number(item.get("quantity"));
-			item.set( {total: totalPrice} )
+			item.set( {total: totalPrice}, {silent: true} )
     });
 	},
 	incrementItem: function(event) {
@@ -54,12 +58,10 @@ var CheckoutView = Backbone.View.extend({
 			$("#cart").hide();
 			App.trigger("emptyCart");
 			App.trigger("showMenu");
-		//	App.router.navigate("menu", {trigger: true});
 		});
 	},
 	closeCheckoutView: function(event) {
 		event.preventDefault();
-		//App.router.navigate("menu", {trigger: true});
 		App.trigger("showMenu");
 		$('#cart').show();
 	},
