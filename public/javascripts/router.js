@@ -2,7 +2,6 @@ var Router = Backbone.Router.extend({
 	index: function() {
 		App.renderMenuItems();
 		App.renderCartView();
-		App.updateCheckoutItems();
 		App.router.navigate("menu", {trigger: true});
 	},
 	itemView: function(id) {
@@ -15,7 +14,7 @@ var Router = Backbone.Router.extend({
 		"menu": "index", 
     "checkout": "checkoutView",
 		"menu/:id": "itemView",
-		"": "index",
+		//"": "index",
 	},
 });
 

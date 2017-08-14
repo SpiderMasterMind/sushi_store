@@ -2,7 +2,8 @@ var ItemDetailView = Backbone.View.extend({
 	template: App.templates.item_detail,
 	initialize: function(options) {
 		this.render();
-		this.id = options.id;
+		this.id = Number(options.id);
+		this.lastId = this.getLastId();
 	},
 	render: function() {
 		this.$el.html(this.template( this.collection.get(this.id).toJSON() ));
@@ -14,19 +15,36 @@ var ItemDetailView = Backbone.View.extend({
 		"click .nav.prev": "renderPrevItem",
 		"click .nav.next": "renderNextItem",
 	},
+	getLastId: function() {
+		return this.collection.max(function(model) { return model.get("id") } ).get("id");	
+	},
 	renderPrevItem: function(event) {
 		event.preventDefault();
-		this.id = Number(this.id) - 1;
+		if (this.id === 1) {
+			this.id = this.lastId;
+		} else {	
+			this.id = this.id - 1;
+		}
+		
 		this.render();
+		this.updateUrl();
 	},
 	renderNextItem: function(event) {
 		event.preventDefault();
-		this.id = Number(this.id) + 1;
+		if (this.id === this.lastId) {
+			this.id = 1;
+		} else {
+			this.id = this.id + 1;
+		}
+
 		this.render();
+		this.updateUrl();
+	},
+	updateUrl: function() {
+		App.router.navigate("menu/" + this.id, { trigger: true } );
 	},
 	processAddItem: function(event) {
 		event.preventDefault();
-		
 		if (this.itemExists()) {
 			this.incrementQuantity();
 		} else {
@@ -47,6 +65,7 @@ var ItemDetailView = Backbone.View.extend({
 		event.preventDefault();
 		$("#item_details").remove();
 		App.trigger("showMenu");
+		App.router.navigate("menu", { trigger: true } );
 	},
 	
 });

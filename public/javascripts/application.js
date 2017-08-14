@@ -1,6 +1,4 @@
 // animate transitions
-// min and max ids on transition
-// navigate router URLs
 // setup express POST request
 var App = {
 	templates: JST,
@@ -29,6 +27,7 @@ var App = {
 			el: '#contents',
 			total: this.total,
 		});
+		this.router.navigate("checkout", { trigger: true } );
 	},
 	renderMenuItems: function() {
 		if (this.menuView) { this.menuView.undelegateEvents(); }
@@ -36,7 +35,6 @@ var App = {
 			collection: this.menuItems,
 			el: "#contents",
 		});
-
 	},
 	renderItemDetailView: function(id) {
 		if (this.itemView) { this.itemView.undelegateEvents(); }
@@ -44,7 +42,8 @@ var App = {
 			collection: this.menuItems,
 			el: '#contents',
 			id: id,
-		})
+		});
+		this.router.navigate("menu/" + id, { trigger: true } );
 	},
 	renderTotalItemsView: function() {
 		this.totalView = new TotalItemsView({
@@ -60,6 +59,8 @@ var App = {
 		this.renderCartView();
 	},
 	renderCartView: function() {
+		// added this
+		if (this.cartView) { this.cartView.remove(); }
 		this.cartView = new CartView({ collection: this.cartItems });
 	},
 	returnArrayOfIds: function() {
