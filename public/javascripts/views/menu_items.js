@@ -13,12 +13,12 @@
 	},
 	processShowItem: function(event) {
 		event.preventDefault();
-		var id = +$(event.target).closest('li').attr('data-id')
+		var id = +$(event.target).closest("li").attr("data-id")
 		App.trigger("showItem", id);
 	},
 	processAddItem: function(event) {
 		event.preventDefault();
-		var id = +$(event.target).closest('li').attr('data-id');
+		var id = +$(event.target).closest("li").attr("data-id");
 		if (this.itemExists(id)) {
 			this.incrementQuantity(id);
 		} else {

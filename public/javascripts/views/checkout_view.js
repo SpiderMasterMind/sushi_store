@@ -6,6 +6,7 @@ var CheckoutView = Backbone.View.extend({
 	},
 	renderIfCheckoutView: function() {
 		if ($("#checkout").length > 0) { this.render(); }
+		return this;
 	},
 	render: function() {
 		this.addLineTotalsToCart()
@@ -24,25 +25,25 @@ var CheckoutView = Backbone.View.extend({
 	},
 	getNewTotal: function() {
 		return this.collection.reduce(function(memo, val) { 
-			return memo + (val.get('price') * val.get('quantity'));
+			return memo + (val.get("price") * val.get("quantity"));
 		}, 0);
 	},
 	addLineTotalsToCart: function() {
 		this.collection.each(function(item) {
 			var totalPrice = item.get("price") * Number(item.get("quantity"));
-			item.set( {total: totalPrice}, {silent: true} )
+			item.set( {total: totalPrice} );
     });
 	},
 	incrementItem: function(event) {
 		event.preventDefault();
 		var id = this.getItemId(event);
-		var newQuantity = +(this.collection.get(id).get('quantity')) + 1;
+		var newQuantity = +(this.collection.get(id).get("quantity")) + 1;
 		this.collection.get(id).set({ "quantity": String(newQuantity) });
 	},
 	decrementItem: function(event) {
 		event.preventDefault();
 		var id = this.getItemId(event);
-		var quantity = +(this.collection.get(id).get('quantity')) - 1;
+		var quantity = +(this.collection.get(id).get("quantity")) - 1;
 		if (quantity === 0 || quantity === "0") {
 			this.collection.remove(this.collection.get(id));
 		} else {
@@ -50,11 +51,11 @@ var CheckoutView = Backbone.View.extend({
 		}
 	},	
 	getItemId: function(event) {
-		return $(event.target).closest('tr').attr('data-id');
+		return $(event.target).closest("tr").attr("data-id");
 	},
 	cancelOrder: function(event) {
 		event.preventDefault();
-		$("#cart").slideUp('500', function() {
+		$("#cart").slideUp("500", function() {
 			$("#cart").hide();
 			App.trigger("emptyCart");
 			App.trigger("showMenu");
@@ -63,6 +64,6 @@ var CheckoutView = Backbone.View.extend({
 	closeCheckoutView: function(event) {
 		event.preventDefault();
 		App.trigger("showMenu");
-		$('#cart').show();
+		$("#cart").show();
 	},
 });

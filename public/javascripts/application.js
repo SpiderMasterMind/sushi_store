@@ -1,5 +1,3 @@
-// animate transitions
-// setup express POST request
 var App = {
 	templates: JST,
 	init: function() {
@@ -24,7 +22,7 @@ var App = {
 		if (this.checkout) { this.checkout.undelegateEvents(); }
 		this.checkout =	new CheckoutView({
 			collection: this.cartItems,
-			el: '#contents',
+			el: "#contents",
 			total: this.total,
 		});
 		this.router.navigate("checkout", { trigger: true } );
@@ -40,7 +38,7 @@ var App = {
 		if (this.itemView) { this.itemView.undelegateEvents(); }
 		this.itemView = new ItemDetailView({
 			collection: this.menuItems,
-			el: '#contents',
+			el: "#contents",
 			id: id,
 		});
 		this.router.navigate("menu/" + id, { trigger: true } );
@@ -48,7 +46,7 @@ var App = {
 	renderTotalItemsView: function() {
 		this.totalView = new TotalItemsView({
 			collection: this.cartItems,
-			el: '.cart'
+			el: ".cart"
 		})
 	},
 	emptyCart: function() {
@@ -59,12 +57,8 @@ var App = {
 		this.renderCartView();
 	},
 	renderCartView: function() {
-		// added this
 		if (this.cartView) { this.cartView.remove(); }
 		this.cartView = new CartView({ collection: this.cartItems });
-	},
-	returnArrayOfIds: function() {
-		return this.menuItems.toJSON().map(function(model) { return model.id } );
 	},
 }
 

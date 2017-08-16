@@ -6,7 +6,7 @@ var ItemDetailView = Backbone.View.extend({
 		this.lastId = this.getLastId();
 	},
 	render: function() {
-		this.$el.html(this.template( this.collection.get(this.id).toJSON() ));
+		this.$el.html(this.template(this.collection.get(this.id).toJSON()));
 		return this;
 	},
 	events: {
@@ -20,25 +20,33 @@ var ItemDetailView = Backbone.View.extend({
 	},
 	renderPrevItem: function(event) {
 		event.preventDefault();
+		this.updateIdPrev();
+		this.fadeThenRenderItem();
+	},
+	renderNextItem: function(event) {
+		event.preventDefault();
+		this.updateIdNext();
+		this.fadeThenRenderItem();
+	},
+	updateIdPrev: function() {
 		if (this.id === 1) {
 			this.id = this.lastId;
 		} else {	
 			this.id = this.id - 1;
 		}
-		
-		this.render();
-		this.updateUrl();
 	},
-	renderNextItem: function(event) {
-		event.preventDefault();
+	updateIdNext: function() {
 		if (this.id === this.lastId) {
 			this.id = 1;
 		} else {
 			this.id = this.id + 1;
 		}
-
-		this.render();
-		this.updateUrl();
+	},
+	fadeThenRenderItem: function() {
+		this.$("#item_details > div").fadeOut("fast", function() {
+			this.render();
+			this.updateUrl();
+		}.bind(this));
 	},
 	updateUrl: function() {
 		App.router.navigate("menu/" + this.id, { trigger: true } );
@@ -67,5 +75,4 @@ var ItemDetailView = Backbone.View.extend({
 		App.trigger("showMenu");
 		App.router.navigate("menu", { trigger: true } );
 	},
-	
 });

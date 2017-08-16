@@ -17,10 +17,10 @@ var CartView = Backbone.View.extend({
 		if (this.collection.length === 0) {
 			return;
 		} else if (this.collection.length === 1 && this.allQuantitiesAreOne())  {
-			$('main').prepend(this.$el);
-			$("#cart").hide().slideDown('500');
+			$("main").prepend(this.$el);
+			$("#cart").hide().slideDown("500");
 		} else {
-			$('main').prepend(this.$el);
+			$("main").prepend(this.$el);
 		}
 	},
 	renderCartFooter: function() {
@@ -30,7 +30,7 @@ var CartView = Backbone.View.extend({
 	},
 	allQuantitiesAreOne: function() {
 		return this.collection.every(function(model) {
-			return +model.get('quantity') === 1
+			return +model.get("quantity") === 1
 		}, this);
 	},
 
