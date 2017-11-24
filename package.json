@@ -2,8 +2,11 @@
   "name": "sushi",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "6.10.1"
+  },
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/web"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
@@ -13,6 +16,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "nib": "^1.1.2",
+    "pug": "^2.0.0-rc.4",
     "serve-favicon": "~2.4.2",
     "stylus": "^0.54.5"
   },

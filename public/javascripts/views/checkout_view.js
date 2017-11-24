@@ -22,6 +22,10 @@ var CheckoutView = Backbone.View.extend({
 		"click .fa-plus": "incrementItem",
 		"click .fa-minus": "decrementItem",
 		"click .continue": "closeCheckoutView",
+		"click input[type=submit]": "checkout",
+	},
+	checkout: function(event) {
+		event.preventDefault();
 	},
 	getNewTotal: function() {
 		return this.collection.reduce(function(memo, val) { 
